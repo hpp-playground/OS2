@@ -10,6 +10,8 @@ int main(void) {
   float mean_finish_time;
   int now = 0;
   int min_process;
+  int time_slice = 1;
+
   scanf("%d", &N);
 
   for (int i = 0; i < N; i++) {
@@ -17,27 +19,34 @@ int main(void) {
     scanf("%d", &process_arrival_time[i]);
   }
 
-  for (int i = 0; i < N; i++) {
-    for (int j = 0; j < N; j++) {
-      if (!check[j]) {
-        min_process = j;
+  for (;;) {
+    for (int i = 0; i < N; i++) {
+      if (process_arrival_time[i] <= now && !check[i]) {
+        if (process_work_time[i] >= time_slice) {
+          now += time_slice;
+          process_work_time[i] -= time_slice;
+        } else {
+          now += process_work_time[i];
+          process_work_time[i] = 0;
+        }
+
+        if (process_work_time[i] == 0) {
+          check[i] = 1;
+          result[i] = now;
+        }
+      }
+    };
+    int flag = 1;
+    for (int i = 0; i < N; i++) {
+      if (!check[i]) {
+        flag = 0;
         break;
       }
     }
-
-    for (int j = 0; j < N; j++) {
-      if (!check[j]) {
-        if (process_arrival_time[j] <= now &&
-            process_work_time[j] < process_work_time[min_process]) {
-          min_process = j;
-        }
-      }
-    }
-
-    now += process_work_time[min_process];
-    check[min_process] = 1;
-    result[min_process] = now;
-  }
+    if (flag) {
+      break;
+    };
+  };
 
   for (int i = 0; i < N; i++) {
     printf("%d %d\n", result[i], process_arrival_time[i]);
