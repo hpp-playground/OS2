@@ -28,7 +28,7 @@ int main(void) {
     for (int j = 0; j < N; j++) {
       if (!check[j]) {
         if (process_arrival_time[j] <= now &&
-            process_arrival_time[j] < process_arrival_time[min_process]) {
+            process_work_time[j] < process_work_time[min_process]) {
           min_process = j;
         }
       }
