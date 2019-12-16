@@ -4,6 +4,10 @@ fifo: fifo.c
 shortest: shortest.c
 	gcc shortest.c -o shortest
 
-test: fifo shortest
+roundrobin: roundrobin.c
+	gcc roundrobin.c -o roundrobin
+
+test: fifo shortest roundrobin
 	./fifo < in.txt
 	./shortest < in.txt
+	./roundrobin < in.txt
